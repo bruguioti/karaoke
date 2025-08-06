@@ -1,0 +1,80 @@
+{% load static %}
+
+<style>
+  body {
+    background-color: #121212;
+    font-family: 'Inter', sans-serif;
+    color: #e0e0e0;
+  }
+
+  .navbar-notion {
+    background-color: #1b1b1b !important;
+    border-bottom: 1px solid #2c2c2c;
+  }
+
+  .navbar-notion .nav-link {
+    color: #e0e0e0 !important;
+    transition: color 0.3s ease;
+  }
+
+  .navbar-notion .nav-link:hover {
+    color: #ffffff !important;
+  }
+
+  .navbar-notion .btn-danger {
+    background-color: #e5484d;
+    border: none;
+  }
+
+  .navbar-notion .btn-danger:hover {
+    background-color: #c53438;
+  }
+</style>
+
+<nav class="navbar navbar-expand-lg navbar-dark navbar-notion py-3 shadow-sm">
+  <div class="container">
+    <a class="navbar-brand fw-bold text-white" href="{% url 'fila_karaoke' %}" style="font-size: 1.5rem;">
+      🎤 Karaokê App
+    </a>
+
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+      aria-controls="navbarNav" aria-expanded="false" aria-label="Alternar navegação">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <!-- Menu à esquerda -->
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'promocoes' %}">🍻 Promoções</a>
+        </li>
+      </ul>
+
+      <!-- Menu à direita -->
+      <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+        {% if user.is_authenticated %}
+          <li class="nav-item">
+            <span class="nav-link text-white-50">Olá, {{ user.username }}</span>
+          </li>
+          <li class="nav-item">
+            <form method="post" action="{% url 'logout' %}">
+              {% csrf_token %}
+              <button type="submit" class="btn btn-link nav-link text-danger p-0" style="border:none; background:none;">
+                Sair
+              </button>
+            </form>
+          </li>
+          {% if user.is_staff %}
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'painel_admin' %}">⚙️ Admin</a>
+            </li>
+          {% endif %}
+        {% else %}
+          <li class="nav-item">
+            <a class="btn btn-danger ms-2" href="{% url 'login' %}">Entrar</a>
+          </li>
+        {% endif %}
+      </ul>
+    </div>
+  </div>
+</nav>

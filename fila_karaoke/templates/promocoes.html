@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+
+{% block title %}Promoções da Casa{% endblock %}
+
+{% block extra_css %}
+<style>
+  .card {
+    background-color: #1f1f1f;
+    border: none;
+    border-radius: 12px;
+    color: #e0e0e0;
+    transition: transform 0.2s ease;
+  }
+
+  .card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 15px rgba(100, 108, 255, 0.3);
+  }
+
+  .card-img-top {
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+    object-fit: cover;
+    height: 180px;
+  }
+
+  .card-title {
+    font-weight: 600;
+    color: #ffffff;
+  }
+
+  .card-text {
+    color: #cccccc;
+  }
+
+  .fw-bold {
+    color: #646cff;
+  }
+
+  .container {
+    max-width: 960px;
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+  <h2 class="mb-4" style="color: #ddd;">🍻 Promoções da Casa</h2>
+
+  <div class="row">
+    {% for promo in promocoes %}
+      <div class="col-md-4 mb-4">
+        <div class="card h-100">
+          <img src="{{ promo.imagem.url }}" class="card-img-top" alt="{{ promo.titulo }}">
+          <div class="card-body d-flex flex-column">
+            <h5 class="card-title">{{ promo.titulo }}</h5>
+            <p class="card-text flex-grow-1">{{ promo.descricao }}</p>
+            <p class="card-text fw-bold">💰 R$ {{ promo.valor }}</p>
+          </div>
+        </div>
+      </div>
+    {% empty %}
+      <p style="color: #999; font-style: italic;">Nenhuma promoção cadastrada.</p>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}

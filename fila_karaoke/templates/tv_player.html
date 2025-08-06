@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block title %}🎬 TV Karaokê{% endblock %}
+
+{% block content %}
+<div class="container text-center mt-5">
+    {% if cantor %}
+    <h2 class="mb-4">🎤 Próximo cantor: {{ cantor.usuario.first_name }} {{ cantor.usuario.last_name }}</h2>
+    <h4 class="mb-4">🎵 Música: {{ cantor.musica }}</h4>
+
+    {% if video_id %}
+    <div class="ratio ratio-16x9 mb-4">
+        <iframe id="youtube-player" src="https://www.youtube.com/embed/{{ video_id }}?autoplay=1&rel=0&enablejsapi=1"
+            title="YouTube video player"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen>
+        </iframe>
+
+    </div>
+
+    <!-- Script para tentar colocar em tela cheia -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const iframe = document.getElementById('youtube-player');
+            const requestFullScreen = iframe.requestFullscreen || iframe.mozRequestFullScreen || iframe.webkitRequestFullscreen || iframe.msRequestFullscreen;
+            if (requestFullScreen) {
+                iframe.addEventListener('load', function () {
+                    setTimeout(() => requestFullScreen.call(iframe), 1000);
+                });
+            }
+        });
+    </script>
+    {% else %}
+
+    <p>🎬 Não foi possível encontrar o vídeo automaticamente.</p>
+    <a href="https://www.youtube.com/results?search_query={{ cantor.musica|urlencode }} karaoke" target="_blank"
+        class="btn btn-danger btn-lg">
+        🔎 Buscar no YouTube
+    </a>
+    {% endif %}
+    {% else %}
+    <h2>Nenhum cantor na fila 🎶</h2>
+    {% endif %}
+</div>
+{% endblock %}

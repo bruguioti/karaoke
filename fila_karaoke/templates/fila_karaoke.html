@@ -1,0 +1,177 @@
+{% extends "base.html" %}
+
+{% block extra_css %}
+<style>
+  body {
+    background-color: #121212;
+    color: #e0e0e0;
+    font-family: 'Inter', sans-serif;
+  }
+
+  /* Container geral para ajustar margens */
+  .container {
+    max-width: 720px;
+    margin: 40px auto;
+  }
+
+  h2 {
+    color: #fff;
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+  }
+
+  /* Alerta info escuro */
+  .alert-info {
+    background-color: #2c2c2c;
+    border: none;
+    color: #bbb;
+  }
+
+  /* Formulário */
+  form input.form-control {
+    background-color: #222;
+    border: 1px solid #444;
+    color: #eee;
+    transition: border-color 0.3s ease;
+  }
+
+  form input.form-control:focus {
+    background-color: #222;
+    border-color: #646cff;
+    color: #fff;
+    box-shadow: none;
+  }
+
+  form button.btn-primary {
+    background-color: #646cff;
+    border: none;
+    font-weight: 600;
+    transition: background-color 0.3s ease;
+  }
+
+  form button.btn-primary:hover {
+    background-color: #4b54d1;
+  }
+
+  /* Lista de cantores */
+  ul.list-group {
+    background-color: #1b1b1b;
+    border-radius: 12px;
+    border: none;
+  }
+
+  ul.list-group li.list-group-item {
+    background-color: #2c2c2c;
+    border: none;
+    margin-bottom: 8px;
+    border-radius: 8px;
+    padding: 12px 20px;
+    color: #ddd;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+  ul.list-group li.list-group-item span {
+    font-weight: 500;
+  }
+
+  /* Botões dentro da lista */
+  ul.list-group li.list-group-item a.btn {
+    font-size: 0.85rem;
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-weight: 600;
+    transition: background-color 0.3s ease;
+  }
+
+  /* YouTube (vermelho) */
+  ul.list-group li.list-group-item a.btn-danger {
+    background-color: #e5484d;
+    border: none;
+  }
+
+  ul.list-group li.list-group-item a.btn-danger:hover {
+    background-color: #c43439;
+  }
+
+  /* TV player (azul) */
+  ul.list-group li.list-group-item a.btn-primary {
+    background-color: #646cff;
+    border: none;
+  }
+
+  ul.list-group li.list-group-item a.btn-primary:hover {
+    background-color: #4b54d1;
+  }
+
+  /* Cantou (verde) */
+  ul.list-group li.list-group-item a.btn-success {
+    background-color: #3ab54a;
+    border: none;
+  }
+
+  ul.list-group li.list-group-item a.btn-success:hover {
+    background-color: #2c8b39;
+  }
+
+  /* Mensagem de fila vazia */
+  p {
+    color: #999;
+    font-style: italic;
+    text-align: center;
+    margin-top: 40px;
+  }
+
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+  <!-- Estatística de músicas cantadas hoje -->
+  <p class="alert alert-info">
+    🎵 <strong>{{ musicas_cantadas_hoje }}</strong> música(s) já foram cantadas hoje!
+  </p>
+
+  <!-- Formulário para adicionar cantor -->
+  <h2>Adicionar cantor</h2>
+  <form action="{% url 'adicionar_cantor' %}" method="post" class="row g-3 mb-5">
+    {% csrf_token %}
+    <!-- Campo música apenas -->
+    <div class="col-12">
+      <input type="text" name="musica" placeholder="Nome da música" required class="form-control" autocomplete="off">
+    </div>
+    <div class="col-12">
+      <button type="submit" class="btn btn-primary">Adicionar à fila</button>
+    </div>
+  </form>
+
+  <!-- Lista da fila atual -->
+  <h2>Fila atual</h2>
+
+  {% if cantores %}
+    <ul class="list-group mb-4">
+      {% for cantor in cantores %}
+      <li class="list-group-item">
+        <span>{{ cantor.usuario.first_name }} {{ cantor.usuario.last_name }} - {{ cantor.musica }}</span>
+
+        <div>
+          <a href="https://www.youtube.com/results?search_query={{ cantor.musica|urlencode }}" target="_blank" class="btn btn-danger btn-sm me-2" title="Buscar no YouTube">▶️ YouTube</a>
+
+          {% if forloop.first %}
+          <a href="{% url 'tv_player' %}" target="_blank" class="btn btn-primary btn-sm me-2">🎬 Tocar na TV</a>
+          {% endif %}
+
+          {% if cantor.usuario == user %}
+          <a href="{% url 'cantou' cantor.id %}" class="btn btn-success btn-sm">✅ Cantou</a>
+          {% endif %}
+        </div>
+      </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+  <p>Ninguém na fila ainda.</p>
+  {% endif %}
+</div>
+{% endblock %}

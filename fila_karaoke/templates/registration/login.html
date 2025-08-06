@@ -1,0 +1,103 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block extra_css %}
+<style>
+  body {
+    background-color: #121212; /* fundo escuro Notion */
+    color: #e0e0e0;
+    font-family: 'Inter', sans-serif;
+    height: 100vh;
+    margin: 0;
+  }
+
+  .login-container {
+    max-width: 400px;
+    margin: auto;
+    margin-top: 8%;
+    background-color: #1b1b1b; /* fundo mais escuro */
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.07);
+    border: 1px solid #2c2c2c;
+  }
+
+  .login-container h2 {
+    margin-bottom: 30px;
+    font-size: 28px;
+    font-weight: 600;
+    text-align: center;
+    color: #ffffff;
+  }
+
+  .login-container input {
+    background-color: #2c2c2c;
+    border: none;
+    border-radius: 6px;
+    color: #e0e0e0;
+    padding: 12px;
+    width: 100%;
+    margin-bottom: 20px;
+    font-size: 1rem;
+    transition: border 0.3s ease;
+  }
+
+  .login-container input::placeholder {
+    color: #777777;
+  }
+
+  .login-container input:focus {
+    outline: none;
+    border: 1px solid #646cff; /* tom suave de azul para foco */
+    background-color: #3a3a3a;
+  }
+
+  .login-container button {
+    width: 100%;
+    background-color: #646cff;
+    border: none;
+    padding: 12px;
+    font-size: 16px;
+    color: white;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background-color 0.3s ease;
+  }
+
+  .login-container button:hover {
+    background-color: #4b54d1;
+  }
+
+  .login-container a {
+    color: #9999ff;
+    text-decoration: none;
+    transition: text-decoration 0.3s ease;
+  }
+
+  .login-container a:hover {
+    text-decoration: underline;
+  }
+
+  .register-link {
+    margin-top: 20px;
+    text-align: center;
+    color: #aaaaaa;
+    font-size: 0.9rem;
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="login-container">
+  <h2>Entrar</h2>
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Entrar</button>
+  </form>
+  <div class="register-link">
+    <p>Não tem conta? <a href="{% url 'registro' %}">Cadastre-se agora</a></p>
+  </div>
+</div>
+{% endblock %}

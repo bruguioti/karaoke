@@ -1,0 +1,133 @@
+{% extends "base.html" %}
+
+{% block title %}Painel do Administrador{% endblock %}
+
+{% block extra_css %}
+<style>
+  .admin-section h2,
+  .admin-section h3 {
+    color: #ffffff;
+    font-weight: 600;
+    margin-bottom: 1rem;
+  }
+
+  .admin-section p {
+    color: #bbbbbb;
+  }
+
+  .list-group-item {
+    background-color: #1f1f1f;
+    color: #e0e0e0;
+    border: 1px solid #2c2c2c;
+    border-radius: 8px;
+    margin-bottom: 0.5rem;
+  }
+
+  .list-group-item span {
+    font-weight: 500;
+  }
+
+  .card {
+    background-color: #1f1f1f;
+    border: 1px solid #2c2c2c;
+    border-radius: 12px;
+    color: #e0e0e0;
+  }
+
+  .card-title {
+    color: #ffffff;
+    font-size: 1.1rem;
+    font-weight: 600;
+  }
+
+  .card-text {
+    color: #cccccc;
+    font-size: 0.95rem;
+  }
+
+  .fw-bold {
+    color: #646cff;
+    font-weight: 600;
+  }
+
+  .btn-warning {
+    background-color: #f0ad4e;
+    border: none;
+    color: #000;
+  }
+
+  .btn-warning:hover {
+    background-color: #ec9d25;
+  }
+
+  .btn-danger {
+    background-color: #e50914;
+    border: none;
+  }
+
+  .btn-danger:hover {
+    background-color: #f6121d;
+  }
+
+  .btn-outline-primary {
+    border-color: #646cff;
+    color: #646cff;
+  }
+
+  .btn-outline-primary:hover {
+    background-color: #646cff;
+    color: white;
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container admin-section mt-4">
+  <h2>Painel do Administrador 🎤</h2>
+
+  <div class="mb-4">
+    <p>Total de cantores registrados: <strong>{{ total_cantores }}</strong></p>
+    <a href="{% url 'lista_usuarios' %}" class="btn btn-outline-primary btn-sm">👥 Ver Usuários Cadastrados</a>
+  </div>
+
+  <h3 class="mt-5">Fila de Cantores</h3>
+  <ul class="list-group mb-5">
+    {% for cantor in cantores %}
+    <li class="list-group-item d-flex justify-content-between align-items-center">
+      <span>{{ cantor.nome }} — <i>{{ cantor.musica }}</i></span>
+      <a href="{% url 'cantou' cantor.id %}" class="btn btn-sm btn-success">✅ Marcar como cantou</a>
+    </li>
+    {% empty %}
+    <li class="list-group-item text-muted">Nenhum cantor na fila.</li>
+    {% endfor %}
+  </ul>
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    
+    <a href="{% url 'criar_promocao' %}" class="btn btn-outline-primary btn-sm">➕ Nova Promoção</a>
+  </div>
+
+
+  <h3 class="mb-3">Promoções Atuais 🍻</h3>
+  <div class="row">
+    {% for promo in promocoes %}
+    <div class="col-md-4 mb-4">
+      <div class="card h-100">
+        <img src="{{ promo.imagem.url }}" class="card-img-top" alt="{{ promo.titulo }}"
+          style="border-top-left-radius: 12px; border-top-right-radius: 12px; object-fit: cover; height: 180px;">
+        <div class="card-body d-flex flex-column">
+          <h5 class="card-title">{{ promo.titulo }}</h5>
+          <p class="card-text flex-grow-1">{{ promo.descricao }}</p>
+          <p class="fw-bold">💰 R$ {{ promo.valor }}</p>
+          <div class="mt-2">
+            <a href="{% url 'editar_promocao' promo.pk %}" class="btn btn-warning btn-sm me-2">✏️ Editar</a>
+            <a href="{% url 'excluir_promocao' promo.pk %}" class="btn btn-danger btn-sm">🗑️ Excluir</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% empty %}
+    <p class="text-muted">Nenhuma promoção cadastrada.</p>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}

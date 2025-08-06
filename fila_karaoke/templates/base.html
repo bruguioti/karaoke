@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>{% block title %}Karaokê{% endblock %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+
+    <!-- Fonte Inter para visual mais clean -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
+
+    <!-- Estilo principal -->
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+            background-color: #121212;
+            color: #e0e0e0;
+            font-family: 'Inter', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            padding-bottom: 70px; /* espaço para o rodapé fixo */
+        }
+
+        .container {
+            max-width: 960px;
+        }
+
+        a {
+            color: #646cff;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        a:hover,
+        a:focus {
+            color: #8a98ff;
+            text-decoration: underline;
+            outline: none;
+        }
+
+        footer {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            background-color: #1b1b1b;
+            text-align: center;
+            padding: 12px 0;
+            color: #999999;
+            font-size: 0.9rem;
+            border-top: 1px solid #2c2c2c;
+            z-index: 1000;
+            font-family: 'Inter', sans-serif;
+            user-select: none;
+        }
+
+        .card {
+            background-color: #1f1f1f;
+            border: none;
+            color: #e0e0e0;
+            border-radius: 12px;
+        }
+
+        h5, h6 {
+            color: #ddd;
+        }
+
+        .btn-primary {
+            background-color: #646cff;
+            border-color: #646cff;
+            font-weight: 600;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn-primary:hover,
+        .btn-primary:focus {
+            background-color: #4b54d1;
+            border-color: #4b54d1;
+            outline: none;
+        }
+
+        /* Ajuste para promoções */
+        .promo-card img {
+            max-width: 80px;
+            max-height: 80px;
+            object-fit: contain;
+            flex-shrink: 0;
+            border-radius: 8px;
+        }
+
+        .promo-card {
+            font-size: 0.9rem;
+            gap: 1rem;
+        }
+    </style>
+
+    {% block extra_css %}{% endblock %}
+</head>
+
+<body>
+    {% include "header.html" %}
+
+    <!-- Conteúdo principal -->
+    <main class="container my-4 flex-grow-1">
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Promoções da Casa -->
+    {% if promocoes %}
+    <div class="container mb-4">
+        <h5 class="mb-3" style="font-size: 1rem;">🍻 Promoções da Casa</h5>
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+            {% for promo in promocoes %}
+            <div class="col">
+                <div class="card p-3 d-flex flex-row align-items-center promo-card">
+                    <img src="{{ promo.imagem.url }}" alt="{{ promo.titulo }}" />
+                    <div class="flex-grow-1">
+                        <h6 class="mb-1">{{ promo.titulo }}</h6>
+                        <p class="mb-1 text-truncate" style="max-width: 100%;">{{ promo.descricao|truncatechars:50 }}</p>
+                        <p class="fw-bold mb-0">💰 R$ {{ promo.valor }}</p>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+
+
+    {% include "footer.html" %}
+  
+
+    <!-- Bootstrap JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>
