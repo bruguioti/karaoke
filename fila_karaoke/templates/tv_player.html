@@ -1,24 +1,84 @@
 {% extends "base.html" %}
 
 {% block title %}🎬 TV Karaokê{% endblock %}
+{% block extra_css %}
+<style>
+    html,
+    body {
+        margin: 0;
+        padding: 0;
+        height: 100%;
+        background-color: black;
+        color: white;
+        font-family: sans-serif;
+        overflow: hidden;
+    }
+
+    .container {
+        padding: 2vw;
+        text-align: center;
+    }
+
+    h2 {
+        font-size: clamp(1.5rem, 4vw, 4rem);
+        margin-bottom: 2vw;
+    }
+
+    h4 {
+        font-size: clamp(1rem, 2.5vw, 2.5rem);
+        margin-bottom: 2vw;
+    }
+
+  iframe {
+    width: 200vw;          /* 200% da largura da viewport */
+    max-width: 1700px;     /* largura máxima fixa */
+    aspect-ratio: 16 / 9;  /* mantém proporção widescreen */
+    height: auto;          /* altura ajustada automaticamente pela proporção */
+    max-height: 1908px;    /* altura proporcional ao width 200vw */
+    border: none;
+    margin: 0 auto;
+    display: block;
+}
+
+
+
+    .btn-lg {
+        font-size: clamp(1rem, 2vw, 2rem);
+        padding: 1rem 2rem;
+    }
+
+    @media (max-width: 600px) {
+        .container {
+            padding: 5vw;
+        }
+
+        h2,
+        h4 {
+            margin-bottom: 4vw;
+        }
+
+        iframe {
+            width: 100%;
+            max-width: 100%;
+            max-height: none;
+        }
+    }
+</style>
+{% endblock %}
 
 {% block content %}
-<div class="container text-center mt-5">
+<div class="container">
     {% if cantor %}
-    <h2 class="mb-4">🎤 Próximo cantor: {{ cantor.usuario.first_name }} {{ cantor.usuario.last_name }}</h2>
-    <h4 class="mb-4">🎵 Música: {{ cantor.musica }}</h4>
+    <h2>🎤 Próximo cantor: {{ cantor.usuario.first_name }} {{ cantor.usuario.last_name }}</h2>
+    <h4>🎵 Música: {{ cantor.musica }}</h4>
 
     {% if video_id %}
-    <div class="ratio ratio-16x9 mb-4">
-        <iframe id="youtube-player" src="https://www.youtube.com/embed/{{ video_id }}?autoplay=1&rel=0&enablejsapi=1"
-            title="YouTube video player"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            allowfullscreen>
-        </iframe>
+    <iframe id="youtube-player" src="https://www.youtube.com/embed/{{ video_id }}?autoplay=1&rel=0&enablejsapi=1"
+        title="YouTube video player"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowfullscreen>
+    </iframe>
 
-    </div>
-
-    <!-- Script para tentar colocar em tela cheia -->
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             const iframe = document.getElementById('youtube-player');
@@ -29,9 +89,14 @@
                 });
             }
         });
-    </script>
-    {% else %}
 
+        // Atualiza a página automaticamente a cada 5 minutos (300000 ms)
+        setTimeout(() => {
+            location.reload();
+        }, 300000);
+    </script>
+
+    {% else %}
     <p>🎬 Não foi possível encontrar o vídeo automaticamente.</p>
     <a href="https://www.youtube.com/results?search_query={{ cantor.musica|urlencode }} karaoke" target="_blank"
         class="btn btn-danger btn-lg">

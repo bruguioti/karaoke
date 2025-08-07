@@ -26,11 +26,11 @@
             display: flex;
             flex-direction: column;
             min-height: 100vh;
-            padding-bottom: 70px; /* espaço para o rodapé fixo */
+            padding-bottom: 80px; /* espaço para o rodapé fixo */
         }
 
         .container {
-            max-width: 960px;
+            max-width: 100%;
         }
 
         a {
@@ -66,6 +66,24 @@
             border: none;
             color: #e0e0e0;
             border-radius: 12px;
+            width: 300px; /* Largura fixa para os cards */
+            margin-right: 20px; /* Espaço entre os cards */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            overflow: hidden; /* Garante que a imagem e o conteúdo fiquem dentro do card */
+            flex-shrink: 0; /* Impede que os cards encolham */
+        }
+
+        .card img {
+            width: 100%;
+            height: 200px; /* Altura fixa para a imagem */
+            object-fit: cover; /* A imagem se ajusta ao tamanho do card */
+        }
+
+        .card-body {
+            padding: 10px;
+            text-align: center;
         }
 
         h5, h6 {
@@ -88,10 +106,7 @@
 
         /* Ajuste para promoções */
         .promo-card img {
-            max-width: 80px;
-            max-height: 80px;
-            object-fit: contain;
-            flex-shrink: 0;
+            max-width: 100%;
             border-radius: 8px;
         }
 
@@ -99,6 +114,31 @@
             font-size: 0.9rem;
             gap: 1rem;
         }
+
+        /* Novo: Garante que o main ocupe boa parte da tela */
+        main {
+            min-height: 60vh;
+        }
+
+        /* Rolagem automática de promoções */
+        .promo-cards-container {
+            display: flex;
+            overflow-x: hidden; /* Evita que os cards saiam da tela */
+            gap: 1rem;
+            animation: scroll-cards 15s linear infinite; /* Rolagem contínua mais rápida */
+            padding: 20px 0;
+            justify-content: flex-start;
+        }
+
+        @keyframes scroll-cards {
+            0% {
+                transform: translateX(0);
+            }
+            100% {
+                transform: translateX(-100%);
+            }
+        }
+
     </style>
 
     {% block extra_css %}{% endblock %}
@@ -108,24 +148,22 @@
     {% include "header.html" %}
 
     <!-- Conteúdo principal -->
-    <main class="container my-4 flex-grow-1">
+    <main class="container py-5 flex-grow-1">
         {% block content %}{% endblock %}
     </main>
 
     <!-- Promoções da Casa -->
     {% if promocoes %}
-    <div class="container mb-4">
+    <div class="container mb-5">
         <h5 class="mb-3" style="font-size: 1rem;">🍻 Promoções da Casa</h5>
-        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+        <div class="promo-cards-container">
             {% for promo in promocoes %}
-            <div class="col">
-                <div class="card p-3 d-flex flex-row align-items-center promo-card">
-                    <img src="{{ promo.imagem.url }}" alt="{{ promo.titulo }}" />
-                    <div class="flex-grow-1">
-                        <h6 class="mb-1">{{ promo.titulo }}</h6>
-                        <p class="mb-1 text-truncate" style="max-width: 100%;">{{ promo.descricao|truncatechars:50 }}</p>
-                        <p class="fw-bold mb-0">💰 R$ {{ promo.valor }}</p>
-                    </div>
+            <div class="card p-3 d-flex flex-column align-items-center promo-card">
+                <img src="{{ promo.imagem.url }}" alt="{{ promo.titulo }}" />
+                <div class="card-body">
+                    <h6 class="mb-1">{{ promo.titulo }}</h6>
+                    <p class="mb-1 text-truncate" style="max-width: 100%;">{{ promo.descricao|truncatechars:50 }}</p>
+                    <p class="fw-bold mb-0">💰 R$ {{ promo.valor }}</p>
                 </div>
             </div>
             {% endfor %}
@@ -133,9 +171,11 @@
     </div>
     {% endif %}
 
-
+    <body>
+        <p>..</p>
+    </body>
+    <!-- Rodapé fixo -->
     {% include "footer.html" %}
-  
 
     <!-- Bootstrap JS Bundle -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
