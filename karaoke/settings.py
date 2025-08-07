@@ -1,4 +1,5 @@
 from pathlib import Path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -12,7 +13,8 @@ SECRET_KEY = 'django-insecure-8_e##v0njo=l99)1^f&7dpa#5o$bx81)=f9(a4-r1raafp0&ph
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['karaoke-g5an.onrender.com']
+
 
 # Application definition
 
