@@ -13,7 +13,7 @@ SECRET_KEY = 'django-insecure-8_e##v0njo=l99)1^f&7dpa#5o$bx81)=f9(a4-r1raafp0&ph
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['karaoke-g5an.onrender.com', '127.0.0.1', 'localhost']
+ALLOWED_HOSTS = ['karaoke-2b86.onrender.com', '127.0.0.1', 'localhost']
 
 
 
